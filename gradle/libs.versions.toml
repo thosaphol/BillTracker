@@ -1,4 +1,5 @@
 [versions]
+room = "2.6.1"
 agp = "8.12.0"
 kotlin = "2.2.10"
 coreKtx = "1.17.0"
@@ -58,6 +59,9 @@ okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor"}
 
 chucker = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker"}
 chucker-no-op = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker"}
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
