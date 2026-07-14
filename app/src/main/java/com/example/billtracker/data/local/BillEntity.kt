@@ -4,13 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.billtracker.domain.ReminderType
+import com.example.billtracker.domain.model.ReminderType
 
 @Entity(tableName = "bills")
 @TypeConverters(Converters::class)
 data class BillEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: Int = 0,
 
     val title: String,
     val amount: Double,
@@ -19,7 +19,7 @@ data class BillEntity(
     val dueDate: Long,
 
     @ColumnInfo(name = "category_id")
-    val categoryId: Long,
+    val categoryId: Int,
 
     @ColumnInfo(name = "is_paid")
     val isPaid: Boolean = false,

@@ -1,7 +1,5 @@
 package com.example.billtracker.domain.model
 
-import com.example.billtracker.domain.BillStatus
-import com.example.billtracker.domain.ReminderType
 
 data class BillCategory(
     val bill: Bill,

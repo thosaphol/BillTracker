@@ -6,7 +6,7 @@ import com.example.billtracker.domain.model.BillCategory
 import com.example.billtracker.domain.repository.BillRepository
 import com.example.billtracker.domain.repository.CategoryRepository
 
-class GetAllBillUseCase(
+class GetAllBillCategoriesUseCase(
     val categoryRepository: CategoryRepository,
     val billRepository: BillRepository
 ) {
@@ -28,4 +28,5 @@ class GetAllBillUseCase(
             }
         }
     }
+
 }

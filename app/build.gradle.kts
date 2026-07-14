@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.litert.support.api)
+    implementation(libs.androidx.compose.runtime.livedata)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
@@ -70,14 +72,14 @@ dependencies {
 
     implementation(libs.androidx.hilt.navigation.compose)
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
+    implementation(libs.material.icons.extended)
+
     ksp(libs.hilt.compiler)
 
-    implementation(platform("androidx.compose:compose-bom:2025.05.01"))
-
     implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
 //    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

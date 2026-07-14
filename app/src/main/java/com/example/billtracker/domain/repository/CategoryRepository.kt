@@ -6,8 +6,9 @@ import com.example.billtracker.domain.model.Category
 interface CategoryRepository {
     fun getAllCategories(): LiveData<List<Category>>
     suspend fun getCategoryById(id: Int): Category?
-    suspend fun getCategoryByName(name: String): Category?
-    suspend fun updateCategory(category: Category)
     suspend fun addCategory(category: Category): Long
+    suspend fun updateCategory(category: Category)
     suspend fun deleteCategory(category: Category)
+    suspend fun getCategoryByName(name: String): Category?
+    suspend fun deleteAllCustomCategories()
 }
