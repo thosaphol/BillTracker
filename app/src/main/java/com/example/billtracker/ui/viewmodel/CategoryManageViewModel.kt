@@ -12,10 +12,6 @@ import com.example.billtracker.domain.usecase.category.DeleteCategoryUseCase
 import com.example.billtracker.domain.usecase.category.GetAllCategoriesUseCase
 import kotlinx.coroutines.launch
 
-/**
- * ใช้กับ CategoryManageScreen
- * ไม่ใช้ Hilt - inject use case ผ่าน constructor ธรรมดา
- */
 class CategoryManageViewModel(
     getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val addCategoryUseCase: AddCategoryUseCase,
@@ -27,10 +23,6 @@ class CategoryManageViewModel(
     private val _errorEvent = MutableLiveData<Event<String>>()
     val errorEvent: LiveData<Event<String>> = _errorEvent
 
-    /**
-     * ตอนนี้ fix iconKey เป็น "more_horiz" ไปก่อน (ตามที่ตกลงไว้ว่ายังไม่ทำ icon picker)
-     * ถ้าอยากให้ผู้ใช้เลือกไอคอนเอง ค่อยเพิ่ม parameter iconKey ทีหลัง
-     */
     fun addCategory(name: String) {
         viewModelScope.launch {
             val result = addCategoryUseCase(name = name, iconKey = "more_horiz")

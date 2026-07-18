@@ -1,6 +1,7 @@
 package com.example.billtracker.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
@@ -31,19 +33,12 @@ import com.example.billtracker.domain.model.status
 import com.example.billtracker.domain.model.BillStatus
 import com.example.billtracker.ui.components.AppTopBar
 import com.example.billtracker.ui.components.BillItemCard
-import com.example.billtracker.ui.components.BottomNavBar
-import com.example.billtracker.ui.components.BottomNavDestination
 import com.example.billtracker.ui.components.EmptyStateView
 import com.example.billtracker.ui.components.formatBaht
 import com.example.billtracker.ui.preview.previewBills
 import com.example.billtracker.ui.preview.previewCategories
 import com.example.billtracker.ui.theme.BillTrackerTheme
 
-/**
- * Dumb component: หน้าหลักแสดงรายการค้างจ่ายทั้งหมด
- * รับ bills + categories (resolve แล้ว) จาก ViewModel ผ่าน parameter ทั้งหมด
- * ไม่มีการเรียก Repository/ViewModel ในไฟล์นี้เลย
- */
 @Composable
 fun BillListScreen(
     bills: List<Bill>,
@@ -52,7 +47,6 @@ fun BillListScreen(
     onTogglePaid: (Bill) -> Unit,
     onAddClick: () -> Unit,
     onSettingsClick: () -> Unit,
-    onNavSelect: (BottomNavDestination) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val totalOutstanding = bills.filter { it.status() != BillStatus.PAID }.sumOf { it.amount }
@@ -77,9 +71,6 @@ fun BillListScreen(
             ) {
                 Icon(Icons.Default.Add, contentDescription = "เพิ่มรายการ")
             }
-        },
-        bottomBar = {
-            BottomNavBar(current = BottomNavDestination.BILLS, onSelect = onNavSelect)
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
@@ -118,7 +109,7 @@ fun BillListScreen(
 private fun TotalOutstandingCard(amount: Double, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
@@ -151,8 +142,8 @@ private fun BillListScreenPreview() {
             onTogglePaid = {},
             onAddClick = {},
             onSettingsClick = {},
-            onNavSelect = {}
-        )
+
+            )
     }
 }
 
@@ -167,7 +158,7 @@ private fun BillListScreenEmptyPreview() {
             onTogglePaid = {},
             onAddClick = {},
             onSettingsClick = {},
-            onNavSelect = {}
-        )
+
+            )
     }
 }

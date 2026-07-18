@@ -6,10 +6,7 @@ import com.example.billtracker.data.local.CategoryEntity
 import com.example.billtracker.domain.model.Bill
 import com.example.billtracker.domain.model.Category
 
-/**
- * ตัวแปลงระหว่าง Room Entity <-> Domain model
- * แยกไว้ที่นี่ (ไม่ใช่ extension function ใน domain) เพราะ domain ไม่ควรรู้จัก Entity เลย
- */
+
 
 fun BillEntity.toDomain(): Bill = Bill(
     id = id,

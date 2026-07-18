@@ -13,10 +13,6 @@ import com.example.billtracker.domain.usecase.category.GetAllCategoriesUseCase
 import com.example.billtracker.domain.usecase.bill.MarkBillAsPaidUseCase
 import kotlinx.coroutines.launch
 
-/**
- * ใช้กับ BillListScreen
- * ไม่ใช้ Hilt - inject use case ผ่าน constructor ธรรมดา (ดู Factory ด้านล่างไฟล์)
- */
 class BillListViewModel(
     private val getAllBillsUseCase: GetAllBillsUseCase,
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
@@ -30,7 +26,6 @@ class BillListViewModel(
     private val _errorEvent = MutableLiveData<Event<String>>()
     val errorEvent: LiveData<Event<String>> = _errorEvent
 
-    /** เรียกจาก BillItemCard onTogglePaid - สลับสถานะจ่าย/ไม่จ่าย */
     fun togglePaid(bill: Bill) {
         viewModelScope.launch {
             val result = markBillAsPaidUseCase(bill.id, isPaid = !bill.isPaid)

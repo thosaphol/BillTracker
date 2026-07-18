@@ -32,14 +32,6 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 
-    /**
-     * Insert default category 5 อัน (เช่าบ้าน, ค่าไฟ, ค่าน้ำ, อินเทอร์เน็ต, อื่นๆ)
-     * ตอนสร้างตารางครั้งแรกเท่านั้น (onCreate เรียกครั้งเดียวตอนไฟล์ .db ยังไม่มี)
-     *
-     * ใช้ raw SQL แทนการเรียกผ่าน DAO/INSTANCE เพราะตอน onCreate ทำงาน
-     * (lazy - เกิดตอน query แรกจริงๆ ไม่ใช่ตอน .build()) INSTANCE อาจยังไม่ถูก
-     * set เสร็จจาก getInstance() ด้านบน ใช้ execSQL ตรงๆ จึงปลอดภัยกว่า
-     */
     private class SeedDefaultCategoriesCallback : Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)

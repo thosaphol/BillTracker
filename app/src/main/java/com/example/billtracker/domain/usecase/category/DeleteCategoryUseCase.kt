@@ -5,12 +5,6 @@ import com.example.billtracker.domain.repository.BillRepository
 import com.example.billtracker.domain.repository.CategoryRepository
 
 
-/**
- * ลบหมวดหมู่ พร้อม guard 2 ชั้น:
- * 1. isCustom == false (default category) -> ห้ามลบเด็ดขาด
- * 2. ยังมีบิลผูกกับ category นี้อยู่ -> ห้ามลบ (referential integrity)
- *    ป้องกันบิลเก่ากลายเป็น "categoryId ลอย" หา category ไม่เจอ
- */
 class DeleteCategoryUseCase (
     private val categoryRepository: CategoryRepository,
     private val billRepository: BillRepository

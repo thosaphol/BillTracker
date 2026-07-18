@@ -22,9 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-/**
- * TopAppBar ใช้ซ้ำได้ทุกหน้า (back + title + action ทางขวา แล้วแต่หน้า)
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(
@@ -48,7 +45,6 @@ fun AppTopBar(
     )
 }
 
-/** ส่วนหัวของ section เช่น "หมวดหมู่เริ่มต้น", "การแจ้งเตือน" */
 @Composable
 fun SectionLabel(text: String, modifier: Modifier = Modifier) {
     Text(
@@ -59,7 +55,6 @@ fun SectionLabel(text: String, modifier: Modifier = Modifier) {
     )
 }
 
-/** แสดงตอนไม่มีรายการ (empty state) */
 @Composable
 fun EmptyStateView(
     message: String = "ยังไม่มีรายการค้างจ่าย",

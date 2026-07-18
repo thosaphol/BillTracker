@@ -4,11 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-/**
- * Room entity ของ Category
- * iconKey เก็บเป็น String (เช่น "home", "bolt") แล้ว map เป็น ImageVector
- * ฝั่ง Compose ผ่าน iconFor() ใน ui/components/CategoryIcon.kt
- */
+
 @Entity(tableName = "categories")
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
@@ -25,11 +21,6 @@ data class CategoryEntity(
     val isCustom: Boolean = true
 )
 
-/**
- * ข้อมูลตั้งต้นที่ต้อง insert ตอนสร้าง database ครั้งแรก (เช่นใน RoomDatabase.Callback
- * หรือ Repository.seedDefaultCategoriesIfEmpty()) - id ล็อกไว้ 1-5 ไม่ให้ชนกับ custom
- * category ที่ผู้ใช้เพิ่มทีหลัง (autoGenerate จะเริ่มจาก 6 เป็นต้นไปถ้า insert อันนี้ก่อน)
- */
 val defaultCategoryEntities = listOf(
     CategoryEntity(id = 1, name = "เช่าบ้าน", iconKey = "home", isCustom = false),
     CategoryEntity(id = 2, name = "ค่าไฟ", iconKey = "bolt", isCustom = false),

@@ -10,14 +10,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
-/**
- * Export เป็นไฟล์ JSON เก็บที่ external-files-dir ของแอปเอง
- * (context.getExternalFilesDir ไม่ต้องขอ permission WRITE_EXTERNAL_STORAGE
- * บน Android 10+ เพราะเป็น scoped storage ของแอปเอง - สอดคล้องกับ PDPA
- * ที่ตกลงไว้ว่าไม่ขอ permission เกินจำเป็น)
- *
- * ใช้ org.json ที่มากับ Android SDK อยู่แล้ว ไม่ต้องเพิ่ม dependency (เช่น Gson) เพิ่ม
- */
+
 class JsonDataExporter(
     private val context: Context
 ) : DataExporter {

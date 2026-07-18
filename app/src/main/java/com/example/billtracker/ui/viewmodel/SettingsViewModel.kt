@@ -16,10 +16,6 @@ sealed interface SettingsEvent {
     data class Error(val message: String) : SettingsEvent
 }
 
-/**
- * ใช้กับ SettingsScreen
- * ไม่ใช้ Hilt - inject use case ผ่าน constructor ธรรมดา
- */
 class SettingsViewModel(
     private val exportDataUseCase: ExportDataUseCase,
     private val deleteAllDataUseCase: DeleteAllDataUseCase

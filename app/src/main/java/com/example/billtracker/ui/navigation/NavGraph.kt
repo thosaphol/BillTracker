@@ -1,9 +1,5 @@
 package com.example.billtracker.ui.navigation
 
-/**
- * Route ทั้งหมดของแอป - Single Activity + NavHost (ไม่มี Fragment)
- * ตาม requirement เดิม: bill_list เป็นหน้าแรกเสมอ
- */
 object Routes {
     const val BILL_LIST = "bill_list"
     const val BILL_DETAIL = "bill_detail/{billId}"

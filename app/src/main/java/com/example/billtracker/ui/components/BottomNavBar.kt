@@ -13,11 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 
-
-/**
- * เมนูล่างของแอป มีแค่ 3 หน้าที่ตรงกับ requirement จริง
- * (ตัด Charts/Summary ออกจาก mockup เพราะไม่มีฟีเจอร์นี้ในสโคป)
- */
 enum class BottomNavDestination(val label: String, val icon: ImageVector) {
     BILLS("รายการ", Icons.Default.Receipt),
     CATEGORIES("หมวดหมู่", Icons.Default.Category),

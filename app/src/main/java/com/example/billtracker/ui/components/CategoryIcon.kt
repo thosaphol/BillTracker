@@ -32,10 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.example.billtracker.domain.model.Category
 
 
-/**
- * Map iconKey (เก็บใน Category.iconKey เป็น String เพื่อให้ Room เก็บง่าย) -> ImageVector
- * ใช้ Material Icons ล้วน ไม่ต้องโหลดรูปจากภายนอก (ตรงกับ requirement "ไม่เอารูป เอาแค่ icon")
- */
 fun iconFor(iconKey: String): ImageVector = when (iconKey) {
     "home" -> Icons.Default.Home
     "bolt" -> Icons.Default.Bolt
@@ -48,7 +44,6 @@ fun iconFor(iconKey: String): ImageVector = when (iconKey) {
     else -> Icons.Default.Category
 }
 
-/** ไอคอนในกล่องสี่เหลี่ยมมุมมน ใช้ซ้ำได้ทั้ง list item และ detail screen */
 @Composable
 fun CategoryIconBox(
     iconKey: String,
@@ -72,10 +67,6 @@ fun CategoryIconBox(
     }
 }
 
-/**
- * แถวเลือก category แบบ scroll ในแนวนอน (ใช้ใน AddEditBillScreen)
- * เลือก = การ์ดพื้นดำ, ไม่เลือก = การ์ดพื้นขาวมีขอบ
- */
 @Composable
 fun CategorySelector(
     categories: List<Category>,

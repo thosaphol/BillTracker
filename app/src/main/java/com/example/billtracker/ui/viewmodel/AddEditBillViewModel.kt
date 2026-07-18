@@ -16,16 +16,11 @@ import com.example.billtracker.domain.usecase.bill.UpdateBillUseCase
 import com.example.billtracker.ui.screens.BillFormState
 import kotlinx.coroutines.launch
 
-/** ผลลัพธ์ตอนกด save - ให้ NavHost ตัดสินใจว่าจะ popBackStack หรือโชว์ Snackbar */
 sealed interface SaveBillResult {
     data object Success : SaveBillResult
     data class Error(val message: String) : SaveBillResult
 }
 
-/**
- * ใช้ทั้งโหมดเพิ่มและแก้ไข (isEditMode คำนวณจาก editingBillId == null หรือไม่)
- * ไม่ใช้ Hilt - inject use case ผ่าน constructor ธรรมดา
- */
 class AddEditBillViewModel(
     private val getBillByIdUseCase: GetBillByIdUseCase,
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
@@ -46,7 +41,7 @@ class AddEditBillViewModel(
     private val _saveEvent = MutableLiveData<Event<SaveBillResult>>()
     val saveEvent: LiveData<Event<SaveBillResult>> = _saveEvent
 
-    /** เรียกตอนเปิดหน้านี้ในโหมดแก้ไข (ส่ง billId มาจาก navigation argument) */
+
     fun load(billId: Int) {
         editingBillId = billId
         viewModelScope.launch {
@@ -81,7 +76,7 @@ class AddEditBillViewModel(
         _formState.value = _formState.value?.copy(categoryId = category.id)
     }
 
-    /** เรียกจาก NavHost หลัง DatePickerDialog ปิด พร้อม millis ที่เลือก */
+
     fun onDueDateSelected(millis: Long) {
         _formState.value = _formState.value?.copy(dueDate = millis)
     }

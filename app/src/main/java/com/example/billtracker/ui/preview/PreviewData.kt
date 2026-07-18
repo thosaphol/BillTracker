@@ -6,10 +6,6 @@ import com.example.billtracker.domain.model.ReminderType
 import com.example.billtracker.domain.model.defaultCategories
 import java.util.concurrent.TimeUnit
 
-/**
- * Mock data สำหรับใช้ใน @Preview เท่านั้น — ห้าม import ไฟล์นี้จากโค้ด production จริง
- * (แยกออกจาก domain/model เพราะ domain ควรมีแต่ของจริง ไม่ใช่ mock)
- */
 
 private fun daysFromNow(days: Int): Long =
     System.currentTimeMillis() + TimeUnit.DAYS.toMillis(days.toLong())

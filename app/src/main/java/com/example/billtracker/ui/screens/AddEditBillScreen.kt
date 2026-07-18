@@ -40,10 +40,6 @@ import com.example.billtracker.ui.preview.previewCategories
 import com.example.billtracker.ui.state.DateField
 import com.example.billtracker.ui.theme.BillTrackerTheme
 
-/**
- * State ของฟอร์ม เก็บเป็น draft object เดียว ส่งกลับผ่าน onSave ตอนกดบันทึก
- * ตัวฟอร์มเองไม่รู้จัก ViewModel - ผู้เรียก (ViewModel) เป็นคนสร้าง/แปลง Bill เอง
- */
 data class BillFormState(
     val title: String = "",
     val amount: String = "",              // เก็บเป็น String ระหว่างพิมพ์ แปลงเป็น Double ตอน save
@@ -55,11 +51,6 @@ data class BillFormState(
     val note: String = ""
 )
 
-/**
- * Dumb component: ใช้ทั้งเพิ่มและแก้ไข (ตาม requirement)
- * รับ formState + categories + callback เปลี่ยนแต่ละ field แยกกัน
- * เพื่อให้ ViewModel ควบคุม state ทั้งหมดได้ตรงไปตรงมา (unidirectional data flow)
- */
 @Composable
 fun AddEditBillScreen(
     isEditMode: Boolean,

@@ -34,10 +34,6 @@ import com.example.billtracker.ui.preview.previewCategories
 import com.example.billtracker.domain.model.status
 import com.example.billtracker.ui.theme.BillTrackerTheme
 
-/**
- * Dumb component: รับ bill + category (resolve แล้ว) + callback
- * ไม่รู้จัก ViewModel/Repository ใดๆ ต่อกับ ViewModel ของคุณได้ตรงๆ
- */
 @Composable
 fun BillItemCard(
     bill: Bill,

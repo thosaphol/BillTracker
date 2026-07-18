@@ -8,11 +8,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,18 +30,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.billtracker.ui.components.AppTopBar
-import com.example.billtracker.ui.components.BottomNavBar
-import com.example.billtracker.ui.components.BottomNavDestination
 import com.example.billtracker.ui.components.SectionLabel
 import com.example.billtracker.ui.theme.BillTrackerTheme
 
-/**
- * Dumb component: ตั้งค่า (ทำท้ายสุดตามที่ตกลงไว้ - priority ต่ำสุด)
- * ไม่มี dark mode toggle - แอป follow system theme อัตโนมัติ (ดู ui/theme/Theme.kt)
- */
 @Composable
 fun SettingsScreen(
     appVersion: String,
@@ -49,7 +46,6 @@ fun SettingsScreen(
     onDeleteAllDataConfirm: () -> Unit,
     onOpenGithub: () -> Unit,
     onBackClick: () -> Unit,
-    onNavSelect: (BottomNavDestination) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showDeleteAllDialog by remember { mutableStateOf(false) }
@@ -57,8 +53,8 @@ fun SettingsScreen(
     Scaffold(
         modifier = modifier,
         topBar = { AppTopBar(title = "ตั้งค่า", onBackClick = onBackClick) },
-        bottomBar = { BottomNavBar(current = BottomNavDestination.SETTINGS, onSelect = onNavSelect) }
-    ) { padding ->
+
+        ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -69,7 +65,7 @@ fun SettingsScreen(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 SectionLabel("ข้อมูล")
                 Card(
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Column {
@@ -93,7 +89,7 @@ fun SettingsScreen(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 SectionLabel("เกี่ยวกับ")
                 Card(
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Column {
@@ -141,12 +137,12 @@ fun SettingsScreen(
 
 @Composable
 private fun SettingsRow(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     label: String,
     onClick: (() -> Unit)?,
     trailingText: String? = null,
-    labelColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface,
-    iconColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface
+    labelColor: Color = MaterialTheme.colorScheme.onSurface,
+    iconColor: Color = MaterialTheme.colorScheme.onSurface
 ) {
     Row(
         modifier = Modifier
@@ -175,7 +171,8 @@ private fun SettingsScreenPreview() {
             onDeleteAllDataConfirm = {},
             onOpenGithub = {},
             onBackClick = {},
-            onNavSelect = {}
-        )
+
+            )
     }
 }
+

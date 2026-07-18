@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -16,6 +19,7 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -31,26 +35,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.billtracker.domain.model.Category
 import com.example.billtracker.ui.components.AppTopBar
-import com.example.billtracker.ui.components.BottomNavBar
-import com.example.billtracker.ui.components.BottomNavDestination
 import com.example.billtracker.ui.components.CategoryIconBox
 import com.example.billtracker.ui.components.SectionLabel
 import com.example.billtracker.ui.preview.previewCategories
 import com.example.billtracker.ui.theme.BillTrackerTheme
 
-/**
- * Dumb component: จัดการหมวดหมู่
- * onAddCategory ส่ง (name, iconKey) กลับไปให้ ViewModel สร้าง Category เอง
- * iconKey เลือกจาก icon กลุ่มเดียวกับที่มีใน CategoryIcon.kt (ตรงนี้ fix เป็น "more_horiz"
- * ให้ง่ายก่อน ถ้าอยากให้ผู้ใช้เลือกไอคอนเองค่อยเพิ่ม icon picker ทีหลังได้)
- */
 @Composable
 fun CategoryManageScreen(
     categories: List<Category>,
     onAddCategory: (name: String) -> Unit,
     onDeleteCategory: (Category) -> Unit,
     onBackClick: () -> Unit,
-    onNavSelect: (BottomNavDestination) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var newCategoryName by remember { mutableStateOf("") }
@@ -60,8 +55,8 @@ fun CategoryManageScreen(
     Scaffold(
         modifier = modifier,
         topBar = { AppTopBar(title = "จัดการหมวดหมู่", onBackClick = onBackClick) },
-        bottomBar = { BottomNavBar(current = BottomNavDestination.CATEGORIES, onSelect = onNavSelect) }
-    ) { padding ->
+
+        ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -72,7 +67,7 @@ fun CategoryManageScreen(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 SectionLabel("หมวดหมู่เริ่มต้น (DEFAULT CATEGORIES)")
                 Card(
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Column {
@@ -99,7 +94,7 @@ fun CategoryManageScreen(
                     )
                 } else {
                     Card(
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(16.dp),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                     ) {
                         Column {
@@ -133,7 +128,7 @@ fun CategoryManageScreen(
                             newCategoryName = ""
                         }
                     },
-                    colors = androidx.compose.material3.IconButtonDefaults.filledIconButtonColors(
+                    colors = IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     )
@@ -179,7 +174,7 @@ private fun CategoryManageScreenPreview() {
             onAddCategory = {},
             onDeleteCategory = {},
             onBackClick = {},
-            onNavSelect = {}
-        )
+
+            )
     }
 }

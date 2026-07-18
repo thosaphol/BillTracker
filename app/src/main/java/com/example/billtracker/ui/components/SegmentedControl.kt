@@ -14,10 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
-/**
- * Segmented control ทั่วไป ใช้ได้ทั้งเลือก reminder type และของอื่นๆ ในอนาคต
- * เลือก = พื้นดำ ตัวหนังสือขาว, ไม่เลือก = พื้นขาว มีขอบเทา (ตามธีม monochrome)
- */
 @Composable
 fun <T> SegmentedControl(
     options: List<T>,

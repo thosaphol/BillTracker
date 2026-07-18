@@ -6,10 +6,7 @@ import com.example.billtracker.data.local.BillDao
 import com.example.billtracker.domain.model.Bill
 import com.example.billtracker.domain.repository.BillRepository
 
-/**
- * Implementation จริงของ BillRepository - คุยกับ Room เท่านั้น
- * ViewModel ไม่รู้จักไฟล์นี้เลย รู้จักแค่ interface BillRepository
- */
+
 class BillRepositoryImpl(
     private val billDao: BillDao
 ) : BillRepository {

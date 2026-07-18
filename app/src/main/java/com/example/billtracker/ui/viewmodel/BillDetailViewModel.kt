@@ -19,10 +19,6 @@ sealed interface BillDetailEvent {
     data class Error(val message: String) : BillDetailEvent
 }
 
-/**
- * ใช้กับ BillDetailScreen
- * ไม่ใช้ Hilt - inject use case ผ่าน constructor ธรรมดา
- */
 class BillDetailViewModel(
     private val getBillByIdUseCase: GetBillByIdUseCase,
     private val getCategoryByIdUseCase: GetCategoryByIdUseCase,
@@ -39,7 +35,6 @@ class BillDetailViewModel(
     private val _events = MutableLiveData<Event<BillDetailEvent>>()
     val events: LiveData<Event<BillDetailEvent>> = _events
 
-    /** เรียกตอนเปิดหน้านี้ (จาก LaunchedEffect(billId) ใน NavHost) */
     fun load(billId: Int) {
         viewModelScope.launch {
             val loadedBill = getBillByIdUseCase(billId)

@@ -1,6 +1,7 @@
 package com.example.billtracker.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -20,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,10 +53,6 @@ import com.example.billtracker.ui.preview.previewBills
 import com.example.billtracker.ui.preview.previewCategories
 import com.example.billtracker.ui.theme.BillTrackerTheme
 
-/**
- * Dumb component: ดูรายละเอียดบิล 1 รายการ
- * ไม่มีกล่อง "แนวโน้มการใช้งาน/analytics" ตามที่ตกลงไว้ (ไม่เอา chart)
- */
 @Composable
 fun BillDetailScreen(
     bill: Bill,
@@ -109,7 +109,7 @@ fun BillDetailScreen(
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Column {
@@ -190,7 +190,7 @@ fun BillDetailScreen(
 private fun DetailRow(
     label: String,
     value: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector? = null,
+    icon: ImageVector? = null,
     iconKey: String? = null
 ) {
     Row(
@@ -211,8 +211,8 @@ private fun DetailRow(
 }
 
 @Composable
-private fun CategoryIconIndependentBox(icon: androidx.compose.ui.graphics.vector.ImageVector) {
-    androidx.compose.foundation.layout.Box(
+private fun CategoryIconIndependentBox(icon: ImageVector) {
+    Box(
         modifier = Modifier
             .height(36.dp)
             .padding(0.dp),
@@ -224,7 +224,7 @@ private fun CategoryIconIndependentBox(icon: androidx.compose.ui.graphics.vector
 
 @Composable
 private fun DetailDivider() {
-    androidx.compose.material3.HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+    HorizontalDivider(color = MaterialTheme.colorScheme.outline)
 }
 
 @Preview(showBackground = true, heightDp = 900)

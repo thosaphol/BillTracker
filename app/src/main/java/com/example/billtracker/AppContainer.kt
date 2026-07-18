@@ -21,17 +21,7 @@ import com.example.billtracker.domain.usecase.category.GetCategoryByIdUseCase
 import com.example.billtracker.domain.usecase.setting.DeleteAllDataUseCase
 import com.example.billtracker.domain.usecase.setting.ExportDataUseCase
 
-/**
- * Manual DI container - ไม่ใช้ Hilt/Dagger
- *
- * หลักการ: ประกอบ dependency ทั้งหมด "จากล่างขึ้นบน" ในที่เดียว
- *   Room (Database -> DAO) -> Repository (Impl ผูกกับ interface) -> UseCase -> ViewModel.Factory
- *
- * ทุกอย่างเป็น "lazy val" (สร้างครั้งเดียว ใช้ซ้ำได้ทั้งแอป - เหมือน @Singleton ของ Hilt
- * แต่เขียนเองตรงๆ ไม่ต้องพึ่ง annotation processing ใดๆ)
- *
- * สร้าง instance เดียวไว้ใน BillTrackerApplication แล้วดึงมาใช้จาก MainActivity
- */
+
 class AppContainer(private val context: Context) {
 
     // ---------- Data layer ----------
