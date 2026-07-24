@@ -3,12 +3,21 @@ package com.example.billtracker.domain.repository
 import androidx.lifecycle.LiveData
 import com.example.billtracker.domain.model.Bill
 
-
 interface BillRepository {
+
 
     fun getAllBills(): LiveData<List<Bill>>
 
+
+    suspend fun getAllBillsOnce(): List<Bill>
+
     suspend fun getBillById(id: Int): Bill?
+
+
+    suspend fun getBillsByCategoryId(categoryId: Int): List<Bill>
+
+
+    suspend fun deleteAllBills()
 
     suspend fun addBill(bill: Bill): Long
 
@@ -17,6 +26,5 @@ interface BillRepository {
     suspend fun deleteBill(bill: Bill)
 
     suspend fun markAsPaid(billId: Int, isPaid: Boolean)
-    suspend fun getBillsByCategoryId(id: Int): List<Bill>
-    suspend fun deleteAllBills()
 }
+

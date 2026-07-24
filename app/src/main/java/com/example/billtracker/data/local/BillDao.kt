@@ -14,6 +14,10 @@ interface BillDao {
     @Query("SELECT * FROM bills ORDER BY due_date ASC")
     fun getAllBills(): LiveData<List<BillEntity>>
 
+
+    @Query("SELECT * FROM bills ORDER BY due_date ASC")
+    suspend fun getAllBillsOnce(): List<BillEntity>
+
     @Query("SELECT * FROM bills WHERE id = :id")
     suspend fun getBillById(id: Int): BillEntity?
 
@@ -24,14 +28,14 @@ interface BillDao {
     suspend fun insert(bill: BillEntity): Long
 
     @Update
-    suspend fun update(bill: BillEntity)
+    suspend fun update(bill: BillEntity): Unit
 
     @Delete
-    suspend fun delete(bill: BillEntity)
+    suspend fun delete(bill: BillEntity): Unit
 
     @Query("UPDATE bills SET is_paid = :isPaid WHERE id = :billId")
-    suspend fun updatePaidStatus(billId: Int, isPaid: Boolean)
+    suspend fun updatePaidStatus(billId: Int, isPaid: Boolean): Unit
 
     @Query("DELETE FROM bills")
-    suspend fun deleteAll()
+    suspend fun deleteAll(): Unit
 }

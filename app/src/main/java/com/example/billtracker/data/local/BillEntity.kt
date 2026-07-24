@@ -29,7 +29,6 @@ data class BillEntity(
     @ColumnInfo(name = "reminder_type")
     val reminderType: ReminderType = ReminderType.NONE,
 
-    // null = ใช้ dueDate เป็นค่าเริ่มต้น (ตาม requirement ที่ล็อกไว้)
     @ColumnInfo(name = "reminder_start_date")
     val reminderStartDate: Long? = null,
 

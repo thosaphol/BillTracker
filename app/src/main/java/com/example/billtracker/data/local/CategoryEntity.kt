@@ -15,8 +15,6 @@ data class CategoryEntity(
     @ColumnInfo(name = "icon_key")
     val iconKey: String,
 
-    // default category (เช่าบ้าน, ค่าไฟ, ค่าน้ำ, อินเทอร์เน็ต, อื่นๆ) = false ลบไม่ได้
-    // custom category ที่ผู้ใช้เพิ่มเอง = true ลบได้
     @ColumnInfo(name = "is_custom", defaultValue = "1")
     val isCustom: Boolean = true
 )
