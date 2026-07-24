@@ -1,10 +1,15 @@
 package com.example.billtracker
 
 import android.content.Context
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.billtracker.data.export.JsonDataExporter
 import com.example.billtracker.data.local.AppDatabase
 import com.example.billtracker.data.repository.BillRepositoryImpl
 import com.example.billtracker.data.repository.CategoryRepositoryImpl
+import com.example.billtracker.data.worker.ReminderWorker
+import com.example.billtracker.data.worker.ReminderWorkerFactory
 import com.example.billtracker.domain.repository.BillRepository
 import com.example.billtracker.domain.repository.CategoryRepository
 import com.example.billtracker.domain.repository.DataExporter
@@ -20,7 +25,8 @@ import com.example.billtracker.domain.usecase.category.GetAllCategoriesUseCase
 import com.example.billtracker.domain.usecase.category.GetCategoryByIdUseCase
 import com.example.billtracker.domain.usecase.setting.DeleteAllDataUseCase
 import com.example.billtracker.domain.usecase.setting.ExportDataUseCase
-
+import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 class AppContainer(private val context: Context) {
 
@@ -30,6 +36,11 @@ class AppContainer(private val context: Context) {
     private val billRepository: BillRepository by lazy { BillRepositoryImpl(database.billDao()) }
     private val categoryRepository: CategoryRepository by lazy { CategoryRepositoryImpl(database.categoryDao()) }
     private val dataExporter: DataExporter by lazy { JsonDataExporter(context) }
+
+    // 🔴 DEBUG ONLY - กดปุ่มใน SettingsScreen แล้วเรียกตัวนี้
+    suspend fun debugTestReminderNow(context: Context) {
+        com.example.billtracker.data.worker.ReminderInvoke(context, context, billRepository).invoke()
+    }
 
     // ---------- Bill use cases ----------
     val getAllBillsUseCase: GetAllBillsUseCase by lazy { GetAllBillsUseCase(billRepository) }
@@ -43,7 +54,6 @@ class AppContainer(private val context: Context) {
     val getAllCategoriesUseCase: GetAllCategoriesUseCase by lazy { GetAllCategoriesUseCase(categoryRepository) }
     val getCategoryByIdUseCase: GetCategoryByIdUseCase by lazy { GetCategoryByIdUseCase(categoryRepository) }
     val addCategoryUseCase: AddCategoryUseCase by lazy { AddCategoryUseCase(categoryRepository) }
-//    val updateCategoryUseCase: UpdateCategoryUseCase by lazy { UpdateCategoryUseCase(categoryRepository) }
     val deleteCategoryUseCase: DeleteCategoryUseCase by lazy {
         DeleteCategoryUseCase(categoryRepository, billRepository)
     }
@@ -54,5 +64,33 @@ class AppContainer(private val context: Context) {
     }
     val deleteAllDataUseCase: DeleteAllDataUseCase by lazy {
         DeleteAllDataUseCase(billRepository, categoryRepository)
+    }
+
+    // ---------- WorkManager (reminder notification) ----------
+
+    val workerFactory: ReminderWorkerFactory by lazy { ReminderWorkerFactory(billRepository) }
+
+
+    fun scheduleReminderWork() {
+        val request = PeriodicWorkRequestBuilder<ReminderWorker>(15, TimeUnit.MINUTES)
+            .setInitialDelay(millisUntilNextQuarterHour(), TimeUnit.MILLISECONDS)
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            ReminderWorker.WORK_NAME,
+            ExistingPeriodicWorkPolicy.KEEP,
+            request
+        )
+    }
+
+    private fun millisUntilNextQuarterHour(): Long {
+        val now = Calendar.getInstance()
+        val next = now.clone() as Calendar
+        val currentMinute = now.get(Calendar.MINUTE)
+        val minutesToAdd = 15 - (currentMinute % 15)
+        next.add(Calendar.MINUTE, minutesToAdd)
+        next.set(Calendar.SECOND, 0)
+        next.set(Calendar.MILLISECOND, 0)
+        return (next.timeInMillis - now.timeInMillis).coerceAtLeast(0L)
     }
 }
