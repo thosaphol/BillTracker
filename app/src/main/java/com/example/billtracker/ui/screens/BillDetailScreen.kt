@@ -1,7 +1,6 @@
 package com.example.billtracker.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,20 +8,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Notes
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,12 +36,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.billtracker.domain.model.Bill
 import com.example.billtracker.domain.model.Category
+import com.example.billtracker.domain.model.Holiday
 import com.example.billtracker.domain.model.ReminderType
 import com.example.billtracker.domain.model.status
 import com.example.billtracker.ui.components.AppTopBar
@@ -57,6 +57,7 @@ import com.example.billtracker.ui.theme.BillTrackerTheme
 fun BillDetailScreen(
     bill: Bill,
     category: Category,
+    holidayWarnings: List<Holiday>,
     onBackClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteConfirm: () -> Unit,
@@ -109,7 +110,7 @@ fun BillDetailScreen(
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Column {
@@ -124,6 +125,27 @@ fun BillDetailScreen(
                         label = "วันครบกำหนด",
                         value = formatDateFullThaiYear(bill.dueDate)
                     )
+                    if (holidayWarnings.isNotEmpty()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(start = 58.dp, end = 16.dp, bottom = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Warning,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "มีวันหยุดธนาคารในอีก 3 วันก่อนครบกำหนด: " +
+                                        holidayWarnings.joinToString(", ") { it.name } +
+                                        " (${daysUntilText(bill.dueDate)})",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                     DetailDivider()
                     DetailRow(
                         icon = Icons.Default.Notifications,
@@ -190,7 +212,7 @@ fun BillDetailScreen(
 private fun DetailRow(
     label: String,
     value: String,
-    icon: ImageVector? = null,
+    icon: androidx.compose.ui.graphics.vector.ImageVector? = null,
     iconKey: String? = null
 ) {
     Row(
@@ -211,8 +233,8 @@ private fun DetailRow(
 }
 
 @Composable
-private fun CategoryIconIndependentBox(icon: ImageVector) {
-    Box(
+private fun CategoryIconIndependentBox(icon: androidx.compose.ui.graphics.vector.ImageVector) {
+    androidx.compose.foundation.layout.Box(
         modifier = Modifier
             .height(36.dp)
             .padding(0.dp),
@@ -224,7 +246,31 @@ private fun CategoryIconIndependentBox(icon: ImageVector) {
 
 @Composable
 private fun DetailDivider() {
-    HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+    androidx.compose.material3.HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+}
+
+/** แปลง dueDate เทียบกับวันนี้เป็นข้อความ "อีก N วัน" / "วันนี้" / "ผ่านมาแล้ว N วัน" */
+private fun daysUntilText(dueDate: Long): String {
+    val cal = java.util.Calendar.getInstance()
+
+    fun startOfDay(millis: Long): Long {
+        cal.timeInMillis = millis
+        cal.set(java.util.Calendar.HOUR_OF_DAY, 0)
+        cal.set(java.util.Calendar.MINUTE, 0)
+        cal.set(java.util.Calendar.SECOND, 0)
+        cal.set(java.util.Calendar.MILLISECOND, 0)
+        return cal.timeInMillis
+    }
+
+    val todayStart = startOfDay(System.currentTimeMillis())
+    val dueDateStart = startOfDay(dueDate)
+    val days = (dueDateStart - todayStart) / (24 * 60 * 60 * 1000L)
+
+    return when {
+        days > 0 -> "อีก $days วัน"
+        days == 0L -> "วันนี้"
+        else -> "ผ่านมาแล้ว ${-days} วัน"
+    }
 }
 
 @Preview(showBackground = true, heightDp = 900)
@@ -236,6 +282,7 @@ private fun BillDetailScreenPreview() {
         BillDetailScreen(
             bill = bill,
             category = category,
+            holidayWarnings = emptyList(),
             onBackClick = {},
             onEditClick = {},
             onDeleteConfirm = {},

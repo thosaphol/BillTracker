@@ -1,11 +1,17 @@
 package com.example.billtracker.ui.navigation
 
 
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,6 +49,7 @@ import com.example.billtracker.ui.viewmodel.SettingsEvent
 import com.example.billtracker.ui.viewmodel.SettingsViewModel
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun BillTrackerNavHost(container: AppContainer) {
     val navController = rememberNavController()
@@ -62,12 +69,11 @@ fun BillTrackerNavHost(container: AppContainer) {
         }
     }
 
-    // route ปัจจุบัน - ใช้ตัดสินว่าควรโชว์ BottomNavBar ไหม และ tab ไหนถูกไฮไลต์
+
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
-    // แสดง BottomNavBar เฉพาะ 3 หน้าหลัก (ไม่โชว์ตอนอยู่ใน Detail/AddEdit
-    // เพราะหน้าพวกนี้เป็น "หน้าย่อย" ที่เข้าถึงผ่านปุ่ม back ไม่ใช่ tab)
+
     val currentBottomNavDestination = when (currentRoute) {
         Routes.BILL_LIST -> BottomNavDestination.BILLS
         Routes.CATEGORY_MANAGE -> BottomNavDestination.CATEGORIES
@@ -130,7 +136,8 @@ fun BillTrackerNavHost(container: AppContainer) {
                         container.getBillByIdUseCase,
                         container.getCategoryByIdUseCase,
                         container.markBillAsPaidUseCase,
-                        container.deleteBillUseCase
+                        container.deleteBillUseCase,
+                        container.getHolidaysUseCase
                     )
                 )
 
@@ -138,6 +145,7 @@ fun BillTrackerNavHost(container: AppContainer) {
 
                 val bill by viewModel.bill.observeAsState()
                 val category by viewModel.category.observeAsState()
+                val holidayWarnings by viewModel.holidayWarning.observeAsState(emptyList())
 
                 LaunchedEffect(Unit) {
                     viewModel.events.observeForever { event ->
@@ -156,6 +164,7 @@ fun BillTrackerNavHost(container: AppContainer) {
                         BillDetailScreen(
                             bill = currentBill,
                             category = currentCategory,
+                            holidayWarnings = holidayWarnings,
                             onBackClick = { navController.popBackStack() },
                             onEditClick = { navController.navigate(Routes.editBill(billId)) },
                             onDeleteConfirm = { viewModel.delete() },
@@ -163,25 +172,22 @@ fun BillTrackerNavHost(container: AppContainer) {
                         )
                     }
                     currentBill != null && currentCategory == null -> {
-                        // bill เจอ แต่ category ไม่เจอ - มักเกิดจาก categoryId ไม่ตรงกับ
-                        // category ที่มีอยู่จริงใน DB (ดูคอมเมนต์ด้านบนฟังก์ชันนี้)
-                        androidx.compose.foundation.layout.Box(
-                            modifier = androidx.compose.ui.Modifier.fillMaxSize(),
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            androidx.compose.material3.Text(
+                            Text(
                                 "ไม่พบหมวดหมู่ของรายการนี้ (categoryId: ${currentBill.categoryId})\n" +
                                         "อาจเป็นเพราะหมวดหมู่ถูกลบไปแล้ว"
                             )
                         }
                     }
                     else -> {
-                        // ยังโหลดไม่เสร็จ (LaunchedEffect(billId) ยังทำงานไม่จบ)
-                        androidx.compose.foundation.layout.Box(
-                            modifier = androidx.compose.ui.Modifier.fillMaxSize(),
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            androidx.compose.material3.CircularProgressIndicator()
+                            CircularProgressIndicator()
                         }
                     }
                 }
@@ -326,6 +332,16 @@ fun BillTrackerNavHost(container: AppContainer) {
                     onExportData = { password -> viewModel.exportData(password) },
                     onImportData = { uri, password -> viewModel.importData(uri, password) },
                     onDeleteAllDataConfirm = { viewModel.deleteAllData() },
+                    onOpenNotificationSettings = {
+                        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                                .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName)
+                        } else {
+                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                .setData(android.net.Uri.parse("package:${context.packageName}"))
+                        }
+                        context.startActivity(intent)
+                    },
                     onBackClick = { navController.popBackStack() },
 //                    onTestReminderClick = {
 //                        scope.launch { container.debugTestReminderNow(context) }

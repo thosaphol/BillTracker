@@ -6,13 +6,16 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.billtracker.data.export.JsonDataExporter
 import com.example.billtracker.data.local.AppDatabase
+import com.example.billtracker.data.remote.BotHolidayApi
 import com.example.billtracker.data.repository.BillRepositoryImpl
 import com.example.billtracker.data.repository.CategoryRepositoryImpl
+import com.example.billtracker.data.repository.HolidayRepositoryImpl
 import com.example.billtracker.data.worker.ReminderWorker
 import com.example.billtracker.data.worker.ReminderWorkerFactory
 import com.example.billtracker.domain.repository.BillRepository
 import com.example.billtracker.domain.repository.CategoryRepository
 import com.example.billtracker.domain.repository.DataExporter
+import com.example.billtracker.domain.repository.HolidayRepository
 import com.example.billtracker.domain.usecase.bill.AddBillUseCase
 import com.example.billtracker.domain.usecase.bill.DeleteBillUseCase
 import com.example.billtracker.domain.usecase.bill.GetAllBillsUseCase
@@ -23,9 +26,12 @@ import com.example.billtracker.domain.usecase.category.AddCategoryUseCase
 import com.example.billtracker.domain.usecase.category.DeleteCategoryUseCase
 import com.example.billtracker.domain.usecase.category.GetAllCategoriesUseCase
 import com.example.billtracker.domain.usecase.category.GetCategoryByIdUseCase
+import com.example.billtracker.domain.usecase.holiday.GetHolidaysUseCase
 import com.example.billtracker.domain.usecase.setting.DeleteAllDataUseCase
 import com.example.billtracker.domain.usecase.setting.ExportDataUseCase
 import com.example.billtracker.domain.usecase.setting.ImportDataUseCase
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -68,6 +74,24 @@ class AppContainer(private val context: Context) {
     }
     val deleteAllDataUseCase: DeleteAllDataUseCase by lazy {
         DeleteAllDataUseCase(billRepository, categoryRepository)
+    }
+
+    // ---------- Holiday check (BOT API - ธนาคารแห่งประเทศไทย) ----------
+
+    private val botApiToken: String = BuildConfig.BOT_API_TOKEN
+
+    private val botHolidayApi: BotHolidayApi by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://gateway.api.bot.or.th/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(BotHolidayApi::class.java)
+    }
+    private val holidayRepository: HolidayRepository by lazy {
+        HolidayRepositoryImpl(botHolidayApi, botApiToken, context)
+    }
+    val getHolidaysUseCase: GetHolidaysUseCase by lazy {
+        GetHolidaysUseCase(holidayRepository)
     }
 
     // ---------- WorkManager (reminder notification) ----------

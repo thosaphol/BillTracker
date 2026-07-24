@@ -15,6 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -50,6 +52,7 @@ fun SettingsScreen(
     onExportData: (password: String) -> Unit,
     onImportData: (uri: Uri, password: String) -> Unit,
     onDeleteAllDataConfirm: () -> Unit,
+    onOpenNotificationSettings: () -> Unit,
     onBackClick: () -> Unit,
 //    onTestReminderClick: () -> Unit = {}, // 🔴 DEBUG ONLY - ลบ parameter นี้ทิ้งพร้อมปุ่มด้านล่างหลังทดสอบเสร็จ
     modifier: Modifier = Modifier
@@ -58,6 +61,7 @@ fun SettingsScreen(
     var showExportPasswordDialog by remember { mutableStateOf(false) }
     var showImportPasswordDialog by remember { mutableStateOf(false) }
     var pendingImportUri by remember { mutableStateOf<Uri?>(null) }
+
 
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
@@ -79,6 +83,20 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                SectionLabel("การแจ้งเตือน")
+                Card(
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                ) {
+                    SettingsRow(
+                        icon = Icons.Default.Notifications,
+                        label = "เปิดการแจ้งเตือน",
+                        onClick = onOpenNotificationSettings
+                    )
+                }
+            }
+
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 SectionLabel("ข้อมูล")
                 Card(
@@ -109,7 +127,7 @@ fun SettingsScreen(
                 }
             }
 
-//            // 🔴 DEBUG ONLY - ลบ Column ทั้งก้อนนี้ทิ้งหลังทดสอบ WorkManager/notification เสร็จ
+//            // 🔴 DEBUG ONLY
 //            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 //                SectionLabel("DEBUG")
 //                Card(
@@ -125,23 +143,6 @@ fun SettingsScreen(
 //                    )
 //                }
 //            }
-
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                SectionLabel("เกี่ยวกับ")
-                Card(
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                ) {
-                    Column {
-                        SettingsRow(
-                            icon = Icons.Default.Info,
-                            label = "เวอร์ชันของแอป",
-                            trailingText = appVersion,
-                            onClick = null
-                        )
-                    }
-                }
-            }
         }
     }
 
@@ -289,7 +290,8 @@ private fun SettingsScreenPreview() {
             onExportData = {},
             onImportData = { _, _ -> },
             onDeleteAllDataConfirm = {},
-            onBackClick = {}
+            onOpenNotificationSettings = {},
+            onBackClick = {},
         )
     }
 }
