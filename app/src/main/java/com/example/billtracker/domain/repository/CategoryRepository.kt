@@ -11,4 +11,6 @@ interface CategoryRepository {
     suspend fun deleteCategory(category: Category)
     suspend fun getCategoryByName(name: String): Category?
     suspend fun deleteAllCustomCategories()
+
+    suspend fun getAllCategoriesOnce(): List<Category>
 }

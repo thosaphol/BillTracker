@@ -20,6 +20,9 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE name = :name")
     suspend fun getCategoryByName(name: String): CategoryEntity?
 
+    @Query("SELECT * FROM categories ORDER BY is_custom ASC, name ASC")
+    suspend fun getAllCategoriesOnce(): List<CategoryEntity>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(category: CategoryEntity): Long
 

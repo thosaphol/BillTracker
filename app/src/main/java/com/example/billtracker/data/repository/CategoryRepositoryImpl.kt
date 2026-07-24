@@ -31,4 +31,6 @@ class CategoryRepositoryImpl(
 
     override suspend fun deleteAllCustomCategories() =
         categoryDao.deleteAllCustom()
+
+    override suspend fun getAllCategoriesOnce(): List<Category> = categoryDao.getAllCategoriesOnce().map { it.toDomain() }
 }
