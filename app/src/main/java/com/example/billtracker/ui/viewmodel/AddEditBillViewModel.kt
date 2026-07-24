@@ -31,7 +31,7 @@ class AddEditBillViewModel(
     private var editingBillId: Int? = null
     private var originalCreatedAt: Long = System.currentTimeMillis()
 
-    val isEditMode: Boolean get() = editingBillId != null
+    val isEditMode: Boolean get() = (editingBillId ?: 0) > 0
 
     private val _formState = MutableLiveData(BillFormState())
     val formState: LiveData<BillFormState> = _formState
