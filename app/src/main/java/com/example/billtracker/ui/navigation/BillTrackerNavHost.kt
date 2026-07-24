@@ -1,7 +1,6 @@
 package com.example.billtracker.ui.navigation
 
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -26,9 +25,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.billtracker.AppContainer
+import com.example.billtracker.ui.components.BillDatePicker
 import com.example.billtracker.ui.components.BottomNavBar
 import com.example.billtracker.ui.components.BottomNavDestination
-import com.example.billtracker.ui.components.BillDatePicker
 import com.example.billtracker.ui.screens.AddEditBillScreen
 import com.example.billtracker.ui.screens.BillDetailScreen
 import com.example.billtracker.ui.screens.BillListScreen
@@ -166,8 +165,8 @@ fun BillTrackerNavHost(container: AppContainer) {
                     currentBill != null && currentCategory == null -> {
                         // bill เจอ แต่ category ไม่เจอ - มักเกิดจาก categoryId ไม่ตรงกับ
                         // category ที่มีอยู่จริงใน DB (ดูคอมเมนต์ด้านบนฟังก์ชันนี้)
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
+                        androidx.compose.foundation.layout.Box(
+                            modifier = androidx.compose.ui.Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
                             androidx.compose.material3.Text(
@@ -194,12 +193,12 @@ fun BillTrackerNavHost(container: AppContainer) {
                 arguments = listOf(
                     navArgument(Routes.ARG_BILL_ID) {
                         type = NavType.IntType
-                        defaultValue = -1L
+                        defaultValue = -1
                     }
                 )
             ) { backStackEntry ->
                 val billId = backStackEntry.arguments?.getInt(Routes.ARG_BILL_ID) ?: -1
-                val isEditMode = billId != -1
+                val isEditMode = billId > 0
 
                 val viewModel: AddEditBillViewModel = viewModel(
                     factory = AddEditBillViewModel.Factory(
@@ -301,6 +300,7 @@ fun BillTrackerNavHost(container: AppContainer) {
                 val viewModel: SettingsViewModel = viewModel(
                     factory = SettingsViewModel.Factory(
                         container.exportDataUseCase,
+                        container.importDataUseCase,
                         container.deleteAllDataUseCase
                     )
                 )
@@ -310,6 +310,8 @@ fun BillTrackerNavHost(container: AppContainer) {
                         when (val content = event.getContentIfNotHandled()) {
                             is SettingsEvent.ExportSuccess ->
                                 scope.launch { snackbarHostState.showSnackbar("ส่งออกข้อมูลสำเร็จ") }
+                            is SettingsEvent.ImportSuccess ->
+                                scope.launch { snackbarHostState.showSnackbar("นำเข้าข้อมูลสำเร็จ") }
                             is SettingsEvent.DeleteAllSuccess ->
                                 scope.launch { snackbarHostState.showSnackbar("ลบข้อมูลทั้งหมดสำเร็จ") }
                             is SettingsEvent.Error ->
@@ -321,9 +323,13 @@ fun BillTrackerNavHost(container: AppContainer) {
 
                 SettingsScreen(
                     appVersion = "1.0.0",
-                    onExportData = { viewModel.exportData() },
+                    onExportData = { password -> viewModel.exportData(password) },
+                    onImportData = { uri, password -> viewModel.importData(uri, password) },
                     onDeleteAllDataConfirm = { viewModel.deleteAllData() },
-                    onBackClick = { navController.popBackStack() }
+                    onBackClick = { navController.popBackStack() },
+//                    onTestReminderClick = {
+//                        scope.launch { container.debugTestReminderNow(context) }
+//                    },
                 )
             }
         }

@@ -25,6 +25,7 @@ import com.example.billtracker.domain.usecase.category.GetAllCategoriesUseCase
 import com.example.billtracker.domain.usecase.category.GetCategoryByIdUseCase
 import com.example.billtracker.domain.usecase.setting.DeleteAllDataUseCase
 import com.example.billtracker.domain.usecase.setting.ExportDataUseCase
+import com.example.billtracker.domain.usecase.setting.ImportDataUseCase
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -37,7 +38,7 @@ class AppContainer(private val context: Context) {
     private val categoryRepository: CategoryRepository by lazy { CategoryRepositoryImpl(database.categoryDao()) }
     private val dataExporter: DataExporter by lazy { JsonDataExporter(context) }
 
-    // 🔴 DEBUG ONLY - กดปุ่มใน SettingsScreen แล้วเรียกตัวนี้
+
     suspend fun debugTestReminderNow(context: Context) {
         com.example.billtracker.data.worker.ReminderInvoke(context, context, billRepository).invoke()
     }
@@ -62,6 +63,9 @@ class AppContainer(private val context: Context) {
     val exportDataUseCase: ExportDataUseCase by lazy {
         ExportDataUseCase(billRepository, categoryRepository, dataExporter)
     }
+    val importDataUseCase: ImportDataUseCase by lazy {
+        ImportDataUseCase(billRepository, categoryRepository, dataExporter)
+    }
     val deleteAllDataUseCase: DeleteAllDataUseCase by lazy {
         DeleteAllDataUseCase(billRepository, categoryRepository)
     }
@@ -69,7 +73,6 @@ class AppContainer(private val context: Context) {
     // ---------- WorkManager (reminder notification) ----------
 
     val workerFactory: ReminderWorkerFactory by lazy { ReminderWorkerFactory(billRepository) }
-
 
     fun scheduleReminderWork() {
         val request = PeriodicWorkRequestBuilder<ReminderWorker>(15, TimeUnit.MINUTES)

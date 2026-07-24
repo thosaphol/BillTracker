@@ -12,14 +12,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.billtracker.ui.navigation.BillTrackerNavHost
 import com.example.billtracker.ui.theme.BillTrackerTheme
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
+
     private val requestNotificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { /* no-op */ }
+
+    private val requestStoragePermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { /* no-op */ }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +29,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         askNotificationPermissionIfNeeded()
+        askStoragePermissionIfNeeded()
+
 
         val container = (application as BillTrackerApplication).container
 
@@ -49,6 +53,19 @@ class MainActivity : ComponentActivity() {
 
         if (!alreadyGranted) {
             requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    private fun askStoragePermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) return
+
+        val alreadyGranted = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (!alreadyGranted) {
+            requestStoragePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
     }
 }
