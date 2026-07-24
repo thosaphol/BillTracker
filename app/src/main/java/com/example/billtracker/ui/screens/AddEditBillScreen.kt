@@ -42,7 +42,7 @@ import com.example.billtracker.ui.theme.BillTrackerTheme
 
 data class BillFormState(
     val title: String = "",
-    val amount: String = "",              // เก็บเป็น String ระหว่างพิมพ์ แปลงเป็น Double ตอน save
+    val amount: String = "",
     val categoryId: Int? = null,
     val dueDate: Long? = null,
     val reminderEnabled: Boolean = false,
@@ -162,7 +162,7 @@ fun AddEditBillScreen(
                 }
 
                 if (formState.reminderEnabled) {
-                    // เฉพาะ NONE / DAILY / MONTHLY ตาม requirement ที่ล็อกไว้ (ไม่มี "ทุกปี"/"ทุกสัปดาห์")
+
                     SegmentedControl(
                         options = listOf(ReminderType.NONE, ReminderType.DAILY, ReminderType.MONTHLY),
                         selected = formState.reminderType,

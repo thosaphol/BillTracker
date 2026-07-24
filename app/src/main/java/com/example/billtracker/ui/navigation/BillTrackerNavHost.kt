@@ -321,17 +321,9 @@ fun BillTrackerNavHost(container: AppContainer) {
 
                 SettingsScreen(
                     appVersion = "1.0.0",
-                    githubUrl = "https://github.com/yourname/bill-tracker",
                     onExportData = { viewModel.exportData() },
                     onDeleteAllDataConfirm = { viewModel.deleteAllData() },
-                    onOpenGithub = {
-                        val intent = android.content.Intent(
-                            android.content.Intent.ACTION_VIEW,
-                            android.net.Uri.parse("https://github.com/yourname/bill-tracker")
-                        )
-                        context.startActivity(intent)
-                    },
-                    onBackClick = { navController.popBackStack() },
+                    onBackClick = { navController.popBackStack() }
                 )
             }
         }

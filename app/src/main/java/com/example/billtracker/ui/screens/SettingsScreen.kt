@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
@@ -30,22 +29,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.billtracker.ui.components.AppTopBar
 import com.example.billtracker.ui.components.SectionLabel
 import com.example.billtracker.ui.theme.BillTrackerTheme
 
+
 @Composable
 fun SettingsScreen(
     appVersion: String,
-    githubUrl: String,
     onExportData: () -> Unit,
     onDeleteAllDataConfirm: () -> Unit,
-    onOpenGithub: () -> Unit,
     onBackClick: () -> Unit,
+//    onTestReminderClick: () -> Unit = {}, // 🔴 DEBUG ONLY - ลบ parameter นี้ทิ้งพร้อมปุ่มด้านล่างหลังทดสอบเสร็จ
     modifier: Modifier = Modifier
 ) {
     var showDeleteAllDialog by remember { mutableStateOf(false) }
@@ -53,8 +50,7 @@ fun SettingsScreen(
     Scaffold(
         modifier = modifier,
         topBar = { AppTopBar(title = "ตั้งค่า", onBackClick = onBackClick) },
-
-        ) { padding ->
+    ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -65,7 +61,7 @@ fun SettingsScreen(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 SectionLabel("ข้อมูล")
                 Card(
-                    shape = RoundedCornerShape(16.dp),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Column {
@@ -86,10 +82,27 @@ fun SettingsScreen(
                 }
             }
 
+//            // 🔴 DEBUG ONLY - ลบ Column ทั้งก้อนนี้ทิ้งหลังทดสอบ WorkManager/notification เสร็จ
+//            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+//                SectionLabel("DEBUG")
+//                Card(
+//                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+//                    colors = CardDefaults.cardColors(
+//                        containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.08f)
+//                    )
+//                ) {
+//                    SettingsRow(
+//                        icon = Icons.Default.Delete,
+//                        label = "ทดสอบแจ้งเตือนทันที",
+//                        onClick = onTestReminderClick
+//                    )
+//                }
+//            }
+
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 SectionLabel("เกี่ยวกับ")
                 Card(
-                    shape = RoundedCornerShape(16.dp),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Column {
@@ -98,12 +111,6 @@ fun SettingsScreen(
                             label = "เวอร์ชันของแอป",
                             trailingText = appVersion,
                             onClick = null
-                        )
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
-                        SettingsRow(
-                            icon = Icons.Default.OpenInNew,
-                            label = "GitHub Repository",
-                            onClick = onOpenGithub
                         )
                     }
                 }
@@ -137,12 +144,12 @@ fun SettingsScreen(
 
 @Composable
 private fun SettingsRow(
-    icon: ImageVector,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
     label: String,
     onClick: (() -> Unit)?,
     trailingText: String? = null,
-    labelColor: Color = MaterialTheme.colorScheme.onSurface,
-    iconColor: Color = MaterialTheme.colorScheme.onSurface
+    labelColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface,
+    iconColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface
 ) {
     Row(
         modifier = Modifier
@@ -166,13 +173,9 @@ private fun SettingsScreenPreview() {
     BillTrackerTheme {
         SettingsScreen(
             appVersion = "1.0.0",
-            githubUrl = "https://github.com/yourname/bill-tracker",
             onExportData = {},
             onDeleteAllDataConfirm = {},
-            onOpenGithub = {},
             onBackClick = {},
-
-            )
+        )
     }
 }
-
