@@ -19,8 +19,8 @@ class HolidayRepositoryImpl(
     private val prefs = context.getSharedPreferences("bot_holiday_cache", Context.MODE_PRIVATE)
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
-    override suspend fun getHolidays(year: Int): List<Holiday> {
-        readFromCache(year)?.let { return it }
+    override suspend fun getHolidays(year: Int): Result<List<Holiday>> {
+        readFromCache(year)?.let { return Result.success(it) }
 
         return try {
             val response = api.getHolidays(token = apiToken, year = year.toString())
@@ -31,14 +31,15 @@ class HolidayRepositoryImpl(
                 )
             }
             saveToCache(year, holidays)
-            holidays
+            Result.success(holidays)
         } catch (e: Exception) {
-            emptyList() 
+            prefs.edit().putLong(lastFailedKey(year), System.currentTimeMillis()).apply()
+            Result.failure(e)
         }
     }
 
     private fun cacheKey(year: Int) = "holidays_$year"
-
+    private fun lastFailedKey(year: Int) = "holidays_failed_at_$year"
     private fun saveToCache(year: Int, holidays: List<Holiday>) {
         val array = JSONArray()
         holidays.forEach { holiday ->

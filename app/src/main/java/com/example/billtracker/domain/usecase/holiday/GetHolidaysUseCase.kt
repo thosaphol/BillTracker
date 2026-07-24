@@ -6,7 +6,5 @@ import com.example.billtracker.domain.repository.HolidayRepository
 class GetHolidaysUseCase(
     private val repository: HolidayRepository
 ) {
-    suspend operator fun invoke(year: Int): List<Holiday> {
-        return repository.getHolidays(year)
-    }
+    suspend operator fun invoke(year: Int): Result<List<Holiday>> = repository.getHolidays(year)
 }

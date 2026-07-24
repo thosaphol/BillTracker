@@ -43,6 +43,7 @@ class BillDetailViewModel(
     private val _events = MutableLiveData<Event<BillDetailEvent>>()
     val events: LiveData<Event<BillDetailEvent>> = _events
 
+
     fun load(billId: Int) {
         viewModelScope.launch {
             val loadedBill = getBillByIdUseCase(billId)
@@ -56,10 +57,19 @@ class BillDetailViewModel(
 
     private suspend fun checkHoliday(dueDate: Long) {
         val year = Calendar.getInstance().apply { timeInMillis = dueDate }.get(Calendar.YEAR)
-        val holidays = getHolidaysUseCase(year)
-        val holidaysPrevYear = if (Calendar.getInstance().apply { timeInMillis = dueDate }
-                .get(Calendar.DAY_OF_YEAR) <= 3) getHolidaysUseCase(year - 1) else emptyList()
-        _holidayWarning.value = (holidays + holidaysPrevYear).matchingWithinDays(dueDate)
+        val isNearYearStart = Calendar.getInstance().apply { timeInMillis = dueDate }
+            .get(Calendar.DAY_OF_YEAR) <= 3
+
+        val currentYearResult = getHolidaysUseCase(year)
+        val prevYearResult = if (isNearYearStart) getHolidaysUseCase(year - 1) else Result.success(emptyList())
+
+        currentYearResult.onFailure {
+            _events.value = Event(BillDetailEvent.Error("ไม่สามารถเช็ควันหยุดธนาคารได้ (ตรวจสอบอินเทอร์เน็ต)"))
+        }
+
+        val currentYearHolidays = currentYearResult.getOrDefault(emptyList())
+        val prevYearHolidays = prevYearResult.getOrDefault(emptyList())
+        _holidayWarning.value = (currentYearHolidays + prevYearHolidays).matchingWithinDays(dueDate)
     }
 
     fun markAsPaid() {

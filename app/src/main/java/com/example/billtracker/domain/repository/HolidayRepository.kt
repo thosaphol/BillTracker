@@ -4,5 +4,5 @@ import com.example.billtracker.domain.model.Holiday
 
 
 interface HolidayRepository {
-    suspend fun getHolidays(year: Int): List<Holiday>
+    suspend fun getHolidays(year: Int): Result<List<Holiday>>
 }
