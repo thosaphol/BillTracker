@@ -40,6 +40,14 @@ android {
     buildFeatures {
         compose = true
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+    defaultConfig {
+        val botApiToken = project.findProperty("BOT_API_TOKEN") as String? ?: ""
+        buildConfigField("String", "BOT_API_TOKEN", "\"$botApiToken\"")
+    }
 }
 kotlin {
     jvmToolchain(11)
