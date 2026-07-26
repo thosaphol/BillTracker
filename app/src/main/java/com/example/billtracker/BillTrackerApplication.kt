@@ -3,7 +3,9 @@ package com.example.billtracker
 import android.app.Application
 import androidx.work.Configuration
 import com.example.billtracker.data.notification.BillNotificationHelper
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class BillTrackerApplication : Application(), Configuration.Provider {
     lateinit var container: AppContainer
         private set
