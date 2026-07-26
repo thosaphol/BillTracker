@@ -83,6 +83,9 @@ dependencies {
     implementation(libs.material.icons.extended)
 
     ksp(libs.hilt.compiler)
+    ksp(libs.android.hilt.compiler)
+    implementation(libs.hilt.work)
+
 
     implementation("androidx.compose.foundation:foundation")
     implementation(libs.room.runtime)
