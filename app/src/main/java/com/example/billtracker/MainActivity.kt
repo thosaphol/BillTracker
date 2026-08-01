@@ -14,7 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.example.billtracker.ui.navigation.BillTrackerNavHost
 import com.example.billtracker.ui.theme.BillTrackerTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
 
