@@ -6,9 +6,10 @@ import com.example.billtracker.domain.model.Bill
 import com.example.billtracker.domain.model.BillCategory
 import com.example.billtracker.domain.repository.BillRepository
 import com.example.billtracker.domain.repository.CategoryRepository
+import javax.inject.Inject
 
-class GetAllBillsUseCase (
-    val billRepository: BillRepository
+class GetAllBillsUseCase @Inject constructor (
+    private val billRepository: BillRepository
 ) {
 
     operator fun invoke(): LiveData<List<Bill>> {

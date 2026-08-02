@@ -5,9 +5,10 @@ import com.example.billtracker.domain.model.BillCategory
 import com.example.billtracker.domain.model.toBill
 import com.example.billtracker.domain.repository.BillRepository
 import com.example.billtracker.domain.repository.CategoryRepository
+import javax.inject.Inject
 
 
-class AddBillUseCase (
+class AddBillUseCase @Inject constructor (
     private val repository: BillRepository
 ) {
     suspend operator fun invoke(bill: Bill): Result<Long> {

@@ -3,10 +3,11 @@ package com.example.billtracker.domain.usecase.bill
 import com.example.billtracker.domain.model.BillCategory
 import com.example.billtracker.domain.repository.BillRepository
 import com.example.billtracker.domain.repository.CategoryRepository
+import javax.inject.Inject
 
-class GetBillCategoryByIdUseCase (
-    val categoryRepository: CategoryRepository,
-    val billRepository: BillRepository
+class GetBillCategoryByIdUseCase @Inject constructor(
+    private val categoryRepository: CategoryRepository,
+    private val billRepository: BillRepository
 ) {
 
     suspend operator fun invoke(id: Int): BillCategory?{

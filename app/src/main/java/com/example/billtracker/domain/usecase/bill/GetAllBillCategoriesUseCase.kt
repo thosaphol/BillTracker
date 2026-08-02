@@ -5,10 +5,11 @@ import com.example.billtracker.common.combineLatest
 import com.example.billtracker.domain.model.BillCategory
 import com.example.billtracker.domain.repository.BillRepository
 import com.example.billtracker.domain.repository.CategoryRepository
+import javax.inject.Inject
 
-class GetAllBillCategoriesUseCase(
-    val categoryRepository: CategoryRepository,
-    val billRepository: BillRepository
+class GetAllBillCategoriesUseCase @Inject constructor(
+    private val categoryRepository: CategoryRepository,
+    private val billRepository: BillRepository
 ) {
 
     operator fun invoke(): LiveData<List<BillCategory>> {

@@ -3,9 +3,10 @@ package com.example.billtracker.domain.usecase.category
 import com.example.billtracker.domain.model.Category
 import com.example.billtracker.domain.repository.BillRepository
 import com.example.billtracker.domain.repository.CategoryRepository
+import javax.inject.Inject
 
 
-class DeleteCategoryUseCase (
+class DeleteCategoryUseCase @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val billRepository: BillRepository
 ) {

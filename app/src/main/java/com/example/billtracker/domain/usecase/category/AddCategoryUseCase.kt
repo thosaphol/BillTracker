@@ -2,8 +2,9 @@ package com.example.billtracker.domain.usecase.category
 
 import com.example.billtracker.domain.model.Category
 import com.example.billtracker.domain.repository.CategoryRepository
+import javax.inject.Inject
 
-class AddCategoryUseCase (
+class AddCategoryUseCase @Inject constructor(
     private val repository: CategoryRepository
 ) {
     suspend operator fun invoke(name: String, iconKey: String): Result<Long> {
