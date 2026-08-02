@@ -4,16 +4,18 @@ import android.content.Context
 import com.example.billtracker.data.remote.BotHolidayApi
 import com.example.billtracker.domain.model.Holiday
 import com.example.billtracker.domain.repository.HolidayRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Locale
+import javax.inject.Inject
 
 
-class HolidayRepositoryImpl(
+class HolidayRepositoryImpl @Inject constructor(
     private val api: BotHolidayApi,
     private val apiToken: String,
-    context: Context
+    @ApplicationContext context: Context
 ) : HolidayRepository {
 
     private val prefs = context.getSharedPreferences("bot_holiday_cache", Context.MODE_PRIVATE)

@@ -5,8 +5,9 @@ import androidx.lifecycle.map
 import com.example.billtracker.data.local.CategoryDao
 import com.example.billtracker.domain.model.Category
 import com.example.billtracker.domain.repository.CategoryRepository
+import javax.inject.Inject
 
-class CategoryRepositoryImpl(
+class CategoryRepositoryImpl @Inject constructor(
     private val categoryDao: CategoryDao
 ) : CategoryRepository {
 

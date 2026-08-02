@@ -12,14 +12,16 @@ import com.example.billtracker.domain.model.Category
 import com.example.billtracker.domain.model.ReminderType
 import com.example.billtracker.domain.repository.DataExporter
 import com.example.billtracker.domain.repository.ImportedData
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import javax.inject.Inject
 
-class JsonDataExporter(
-    private val context: Context
+class JsonDataExporter @Inject constructor(
+    @param:ApplicationContext private val context: Context
 ) : DataExporter {
 
     override suspend fun export(bills: List<Bill>, categories: List<Category>, password: String): Result<Unit> =

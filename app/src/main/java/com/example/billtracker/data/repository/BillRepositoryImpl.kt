@@ -5,9 +5,10 @@ import androidx.lifecycle.map
 import com.example.billtracker.data.local.BillDao
 import com.example.billtracker.domain.model.Bill
 import com.example.billtracker.domain.repository.BillRepository
+import javax.inject.Inject
 
 
-class BillRepositoryImpl(
+class BillRepositoryImpl @Inject constructor (
     private val billDao: BillDao
 ) : BillRepository {
 
