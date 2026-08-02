@@ -2,6 +2,7 @@ package com.example.billtracker.data.repository
 
 import android.content.Context
 import com.example.billtracker.data.remote.BotHolidayApi
+import com.example.billtracker.di.BotApiToken
 import com.example.billtracker.domain.model.Holiday
 import com.example.billtracker.domain.repository.HolidayRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 class HolidayRepositoryImpl @Inject constructor(
     private val api: BotHolidayApi,
-    private val apiToken: String,
+    @param:BotApiToken private val apiToken: String,
     @ApplicationContext context: Context
 ) : HolidayRepository {
 
