@@ -10,10 +10,13 @@ import com.example.billtracker.domain.model.Category
 import com.example.billtracker.domain.usecase.category.AddCategoryUseCase
 import com.example.billtracker.domain.usecase.category.DeleteCategoryUseCase
 import com.example.billtracker.domain.usecase.category.GetAllCategoriesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CategoryManageViewModel(
-    getAllCategoriesUseCase: GetAllCategoriesUseCase,
+@HiltViewModel
+class CategoryManageViewModel @Inject constructor(
+    private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val addCategoryUseCase: AddCategoryUseCase,
     private val deleteCategoryUseCase: DeleteCategoryUseCase
 ) : ViewModel() {

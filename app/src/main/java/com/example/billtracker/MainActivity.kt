@@ -33,13 +33,10 @@ class MainActivity : ComponentActivity() {
         askNotificationPermissionIfNeeded()
         askStoragePermissionIfNeeded()
 
-
-        val container = (application as BillTrackerApplication).container
-
         setContent {
             BillTrackerTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    BillTrackerNavHost(container = container)
+                    BillTrackerNavHost()
                 }
             }
         }

@@ -11,15 +11,17 @@ import com.example.billtracker.domain.model.Category
 import com.example.billtracker.domain.usecase.bill.GetAllBillsUseCase
 import com.example.billtracker.domain.usecase.category.GetAllCategoriesUseCase
 import com.example.billtracker.domain.usecase.bill.MarkBillAsPaidUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BillListViewModel(
+@HiltViewModel
+class BillListViewModel @Inject constructor (
     private val getAllBillsUseCase: GetAllBillsUseCase,
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val markBillAsPaidUseCase: MarkBillAsPaidUseCase
 ) : ViewModel() {
 
-    // observe ตรงจาก use case เลย - Room จะคอย emit ค่าใหม่เองอัตโนมัติ (ดูที่คุยกันเรื่อง LiveData ก่อนหน้า)
     val bills: LiveData<List<Bill>> = getAllBillsUseCase()
     val categories: LiveData<List<Category>> = getAllCategoriesUseCase()
 

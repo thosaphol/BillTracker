@@ -15,15 +15,18 @@ import com.example.billtracker.domain.usecase.bill.GetBillByIdUseCase
 import com.example.billtracker.domain.usecase.bill.MarkBillAsPaidUseCase
 import com.example.billtracker.domain.usecase.category.GetCategoryByIdUseCase
 import com.example.billtracker.domain.usecase.holiday.GetHolidaysUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import javax.inject.Inject
 
 sealed interface BillDetailEvent {
     data object DeletedSuccessfully : BillDetailEvent
     data class Error(val message: String) : BillDetailEvent
 }
 
-class BillDetailViewModel(
+@HiltViewModel
+class BillDetailViewModel @Inject constructor(
     private val getBillByIdUseCase: GetBillByIdUseCase,
     private val getCategoryByIdUseCase: GetCategoryByIdUseCase,
     private val markBillAsPaidUseCase: MarkBillAsPaidUseCase,

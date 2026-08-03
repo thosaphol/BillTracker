@@ -14,14 +14,17 @@ import com.example.billtracker.domain.usecase.category.GetAllCategoriesUseCase
 import com.example.billtracker.domain.usecase.bill.GetBillByIdUseCase
 import com.example.billtracker.domain.usecase.bill.UpdateBillUseCase
 import com.example.billtracker.ui.screens.BillFormState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed interface SaveBillResult {
     data object Success : SaveBillResult
     data class Error(val message: String) : SaveBillResult
 }
 
-class AddEditBillViewModel(
+@HiltViewModel
+class AddEditBillViewModel @Inject constructor(
     private val getBillByIdUseCase: GetBillByIdUseCase,
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val addBillUseCase: AddBillUseCase,

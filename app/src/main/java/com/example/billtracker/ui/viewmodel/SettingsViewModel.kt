@@ -10,7 +10,9 @@ import com.example.billtracker.common.Event
 import com.example.billtracker.domain.usecase.setting.DeleteAllDataUseCase
 import com.example.billtracker.domain.usecase.setting.ExportDataUseCase
 import com.example.billtracker.domain.usecase.setting.ImportDataUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed interface SettingsEvent {
     data object ExportSuccess : SettingsEvent
@@ -19,7 +21,8 @@ sealed interface SettingsEvent {
     data class Error(val message: String) : SettingsEvent
 }
 
-class SettingsViewModel(
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
     private val exportDataUseCase: ExportDataUseCase,
     private val importDataUseCase: ImportDataUseCase,
     private val deleteAllDataUseCase: DeleteAllDataUseCase

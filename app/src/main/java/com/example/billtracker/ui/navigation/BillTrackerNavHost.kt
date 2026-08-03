@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -51,7 +52,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun BillTrackerNavHost(container: AppContainer) {
+fun BillTrackerNavHost(){
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -97,13 +98,8 @@ fun BillTrackerNavHost(container: AppContainer) {
 
             // ---------------- BillListScreen ----------------
             composable(Routes.BILL_LIST) {
-                val viewModel: BillListViewModel = viewModel(
-                    factory = BillListViewModel.Factory(
-                        container.getAllBillsUseCase,
-                        container.getAllCategoriesUseCase,
-                        container.markBillAsPaidUseCase
-                    )
-                )
+
+                val viewModel: BillListViewModel = hiltViewModel()
                 val bills by viewModel.bills.observeAsState(emptyList())
                 val categories by viewModel.categories.observeAsState(emptyList())
 
@@ -131,15 +127,7 @@ fun BillTrackerNavHost(container: AppContainer) {
                 arguments = listOf(navArgument(Routes.ARG_BILL_ID) { type = NavType.IntType })
             ) { backStackEntry ->
                 val billId = backStackEntry.arguments?.getInt(Routes.ARG_BILL_ID) ?: return@composable
-                val viewModel: BillDetailViewModel = viewModel(
-                    factory = BillDetailViewModel.Factory(
-                        container.getBillByIdUseCase,
-                        container.getCategoryByIdUseCase,
-                        container.markBillAsPaidUseCase,
-                        container.deleteBillUseCase,
-                        container.getHolidaysUseCase
-                    )
-                )
+                val viewModel: BillDetailViewModel = hiltViewModel()
 
                 LaunchedEffect(billId) { viewModel.load(billId) }
 
@@ -205,15 +193,7 @@ fun BillTrackerNavHost(container: AppContainer) {
             ) { backStackEntry ->
                 val billId = backStackEntry.arguments?.getInt(Routes.ARG_BILL_ID) ?: -1
                 val isEditMode = billId > 0
-
-                val viewModel: AddEditBillViewModel = viewModel(
-                    factory = AddEditBillViewModel.Factory(
-                        container.getBillByIdUseCase,
-                        container.getAllCategoriesUseCase,
-                        container.addBillUseCase,
-                        container.updateBillUseCase
-                    )
-                )
+                val viewModel: AddEditBillViewModel = hiltViewModel()
 
                 LaunchedEffect(billId) { if (isEditMode) viewModel.load(billId) }
 
@@ -275,13 +255,7 @@ fun BillTrackerNavHost(container: AppContainer) {
 
             // ---------------- CategoryManageScreen ----------------
             composable(Routes.CATEGORY_MANAGE) {
-                val viewModel: CategoryManageViewModel = viewModel(
-                    factory = CategoryManageViewModel.Factory(
-                        container.getAllCategoriesUseCase,
-                        container.addCategoryUseCase,
-                        container.deleteCategoryUseCase
-                    )
-                )
+                val viewModel: CategoryManageViewModel = hiltViewModel()
                 val categories by viewModel.categories.observeAsState(emptyList())
 
                 LaunchedEffect(Unit) {
@@ -303,13 +277,7 @@ fun BillTrackerNavHost(container: AppContainer) {
             // ---------------- SettingsScreen ----------------
             composable(Routes.SETTINGS) {
                 val context = LocalContext.current
-                val viewModel: SettingsViewModel = viewModel(
-                    factory = SettingsViewModel.Factory(
-                        container.exportDataUseCase,
-                        container.importDataUseCase,
-                        container.deleteAllDataUseCase
-                    )
-                )
+                val viewModel: SettingsViewModel = hiltViewModel()
 
                 LaunchedEffect(Unit) {
                     viewModel.events.observeForever { event ->
