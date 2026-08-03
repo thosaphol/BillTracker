@@ -54,7 +54,7 @@ fun SettingsScreen(
     onDeleteAllDataConfirm: () -> Unit,
     onOpenNotificationSettings: () -> Unit,
     onBackClick: () -> Unit,
-//    onTestReminderClick: () -> Unit = {}, // 🔴 DEBUG ONLY - ลบ parameter นี้ทิ้งพร้อมปุ่มด้านล่างหลังทดสอบเสร็จ
+//    onTestReminderClick: () -> Unit = {}, // 🔴 DEBUG ONLY
     modifier: Modifier = Modifier
 ) {
     var showDeleteAllDialog by remember { mutableStateOf(false) }

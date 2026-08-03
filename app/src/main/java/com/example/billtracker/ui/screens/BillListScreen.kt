@@ -75,7 +75,7 @@ fun BillListScreen(
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
 
-            // สรุปยอดค้างชำระทั้งหมด (ของแถมจาก mockup ไม่ใช่ core requirement แต่ช่วย UX)
+
             TotalOutstandingCard(
                 amount = totalOutstanding,
                 modifier = Modifier.fillMaxWidth().padding(16.dp)
