@@ -1,6 +1,7 @@
 package com.example.billtracker.data.worker
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
@@ -10,11 +11,14 @@ import com.example.billtracker.domain.model.Bill
 import com.example.billtracker.domain.model.ReminderType
 import com.example.billtracker.domain.model.effectiveReminderStart
 import com.example.billtracker.domain.repository.BillRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import java.util.Calendar
 
-class ReminderWorker(
-    context: Context,
-    params: WorkerParameters,
+@HiltWorker
+class ReminderWorker @AssistedInject constructor(
+    @Assisted context: Context,
+    @Assisted params: WorkerParameters,
     private val billRepository: BillRepository
 ) : CoroutineWorker(context, params) {
     private val reminderInvoke = ReminderInvoke(context,applicationContext,billRepository)
