@@ -36,15 +36,4 @@ class BillListViewModel @Inject constructor (
             }
         }
     }
-
-    class Factory(
-        private val getAllBillsUseCase: GetAllBillsUseCase,
-        private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
-        private val markBillAsPaidUseCase: MarkBillAsPaidUseCase
-    ) : ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return BillListViewModel(getAllBillsUseCase, getAllCategoriesUseCase, markBillAsPaidUseCase) as T
-        }
-    }
 }

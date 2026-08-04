@@ -60,15 +60,4 @@ class SettingsViewModel @Inject constructor(
             )
         }
     }
-
-    class Factory(
-        private val exportDataUseCase: ExportDataUseCase,
-        private val importDataUseCase: ImportDataUseCase,
-        private val deleteAllDataUseCase: DeleteAllDataUseCase
-    ) : ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return SettingsViewModel(exportDataUseCase, importDataUseCase, deleteAllDataUseCase) as T
-        }
-    }
 }

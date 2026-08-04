@@ -44,15 +44,4 @@ class CategoryManageViewModel @Inject constructor(
             }
         }
     }
-
-    class Factory(
-        private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
-        private val addCategoryUseCase: AddCategoryUseCase,
-        private val deleteCategoryUseCase: DeleteCategoryUseCase
-    ) : ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return CategoryManageViewModel(getAllCategoriesUseCase, addCategoryUseCase, deleteCategoryUseCase) as T
-        }
-    }
 }
