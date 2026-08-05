@@ -23,7 +23,7 @@
 | ภาษา | Kotlin |
 | UI | Jetpack Compose (Material 3) |
 | Architecture | MVVM + Clean Architecture (domain / data / ui) |
-| Dependency Injection | Manual DI ผ่าน `AppContainer` (ไม่ใช้ Hilt/Dagger) |
+| Dependency Injection | Hilt |
 | Local Database | Room |
 | Background Task | WorkManager |
 | Network | Retrofit + Gson |
@@ -45,7 +45,6 @@ ui/         ← Jetpack Compose (screens, viewmodel, navigation)
             ไม่เรียก Repository/ViewModel ตรงๆ ในไฟล์ screen
 ```
 
-**หลักการที่ยึดตลอดโปรเจกต์:** โค้ดที่อยู่ใน `domain/` ต้อง test ได้โดยไม่ต้องรันบน Android เลย — ตัวอย่างเช่น logic คำนวณว่า "ควรแจ้งเตือนบิลนี้ตอนไหน" (`ReminderScheduler.kt`) แยกออกมาเป็น pure Kotlin object ผ่าน unit test ยืนยันความถูกต้องแล้ว 23 เคส
 
 ## หน้าจอ
 
@@ -80,7 +79,6 @@ ui/         ← Jetpack Compose (screens, viewmodel, navigation)
 ## ข้อจำกัดที่ทราบอยู่แล้ว (Known Limitations)
 
 - Reminder ผ่าน WorkManager มีความคลาดเคลื่อนได้ ±15 นาที (ข้อจำกัดของ `PeriodicWorkRequest`)
-- Manual DI แทน Hilt ทำให้ boilerplate การประกอบ dependency เยอะกว่าใช้ framework ช่วย แต่เข้าใจ dependency graph ได้ชัดเจนกว่า
 - ยังไม่มี dark mode toggle ในแอป (follow system theme อัตโนมัติเท่านั้น)
 
 ## License
